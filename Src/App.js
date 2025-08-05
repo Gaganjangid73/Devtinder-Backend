@@ -1,22 +1,19 @@
 const express = require("express");
 const App = express();
 
-// Home route
-App.get("/", (req, res) => {
-    res.send("Welcome to my homepage");
+
+App.get("/user",(req,res)=>{
+  res.send({firstname:"Gagan",Lastname:"jangid",Email:"gagan@example.com"});
 });
 
-// About route
-App.get("/about", (req, res) => {
-    res.send("Hey, My name is Gagan");
+App.post("/user", (req,res)=>{
+    res.send("Database successfully Connected");
 });
 
-// Contact route
-App.get("/contact", (req, res) => {
-    res.send("Contact me at gagan@example.com");
+App.delete("/user",(req,res)=>{
+    res.send("user was deleted succesfully.!!❤️");
 });
-
-// Start server
+// Start server that listen the request 
 App.listen(3000, () => {
     console.log("Server is running on port 3000");
 });
