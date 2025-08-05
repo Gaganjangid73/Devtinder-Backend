@@ -1,13 +1,15 @@
 const express = require("express");
 const App = express();
+const {userAuth} = require("../middleware/userauth")
 
 
-App.get("/user",(req,res)=>{
-  res.send({firstname:"Gagan",Lastname:"jangid",Email:"gagan@example.com"});
+
+App.get("/user",userAuth,(req,res)=>{
+  res.send("Sent all the data");
 });
 
 App.post("/user", (req,res)=>{
-    res.send("Database successfully Connected");
+   res.send("Database successfully Connected");
 });
 
 App.delete("/user",(req,res)=>{
