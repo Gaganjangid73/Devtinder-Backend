@@ -1,10 +1,24 @@
-const userAuth =(req,res,next)=>{
-    const userlogin = true;
-    if(userlogin){
-        next();
-    }else{
-        res.status(401).send("you are not a user");
-    }
-}
+const JWT = require("jsonwebtoken");
+const User = require("../models/user");
 
-module.exports = {userAuth};
+const userAuth = async(req, res, next) => {
+  try {
+    const { token } = req.cookies;
+    if (!token) {
+      throw new Error("user was not found");
+    }
+
+    const data = JWT.verify(token, "uhurvhufrbv");
+    const {_id} = data;
+    const user =  await User.findById(_id);
+    if (!user) {
+      throw new Error("user was not found");
+    }
+    req.user = user;
+    next();
+  } catch (err) {
+    res.status(404).send("ERROR : " + err.message);
+  }
+};
+
+module.exports = userAuth ;
