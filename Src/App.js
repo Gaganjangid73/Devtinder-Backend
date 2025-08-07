@@ -61,7 +61,7 @@ App.post("/login", async (req, res) => {
 //  GET PROFILE (using token from cookies)
 App.get("/profile",userAuth, async (req, res) => {
   try {
-    res.send(req.user);
+    res.send(req.user); // gwt user profile of login user 
   } catch (err) {
     // console.error("Error in /profile:", err.message);
     res.status(401).send("Unauthorized: " + err.message);
