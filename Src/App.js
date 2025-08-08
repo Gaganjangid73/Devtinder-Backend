@@ -14,25 +14,7 @@ App.use(express.json());
 App.use(cookieParser());
 
 // SIGNUP API
-App.post("/signup", async (req, res) => {
-  try {
-    Signupvalidation(req);
-    const { firstName, lastName, emailId, password } = req.body;
 
-    const passwordhash = await bcrypt.hash(password, 10);
-    const user = new User({
-      firstName,
-      lastName,
-      emailId,
-      password: passwordhash,
-    });
-
-    await user.save();
-    res.send("User created successfully");
-  } catch (err) {
-    res.status(400).send("Error saving the user: " + err.message);
-  }
-});
 
 //LOGIN API (JWT issued here)
 App.post("/login", async (req, res) => {
