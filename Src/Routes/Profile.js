@@ -1,6 +1,6 @@
 const express = require("express");
 const profileRouter = express.Router();
-const userAuth = require("./middleware/userauth");
+const userAuth = require("../middleware/userauth");
 
 //  GET PROFILE (using token from cookies)
 profileRouter.get("/profile",userAuth, async (req, res) => {

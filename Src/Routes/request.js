@@ -1,9 +1,10 @@
 const express = require("express");
 const requestrouter = express.Router();
+const userAuth = require("../middleware/userauth");
 
 
 // senduserrequest API
-App.post("/senduserrequest",userAuth, async (req,res)=>{
+requestrouter.post("/senduserrequest",userAuth, async (req,res)=>{
    try {
      const users = req.user;
      res.send(users.firstName + " is send requset succesfully");

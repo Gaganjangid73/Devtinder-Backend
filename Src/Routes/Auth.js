@@ -1,7 +1,10 @@
 const express = require("express");
 const authRouter = express.Router();
-const User = require("./models/user");
+const User = require("../models/user");
 const JWT = require("jsonwebtoken");
+const { Signupvalidation } = require("../Utiles/Signupvalidation");
+const bcrypt = require("bcrypt");
+const cookieParser = require("cookie-parser");
 
 
 authRouter.use(express.json());
@@ -30,7 +33,7 @@ authRouter.post("/signup", async (req, res) => {
 
 
 //LOGIN API (JWT issued here)
-App.post("/login", async (req, res) => {
+authRouter.post("/login", async (req, res) => {
   try {
     const { emailId, password } = req.body;
 
