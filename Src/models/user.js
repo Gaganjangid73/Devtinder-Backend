@@ -3,9 +3,15 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
     firstName :{
         type: String,
+        required: true,
+        trim: true,
+        minlength: 2
     },
     lastName :{
         type: String,
+        required: true,
+        trim: true,
+        minlength: 2
     },
     emailId :{
         type:String,
@@ -19,16 +25,19 @@ const userSchema = new mongoose.Schema({
         required : true,
     },
     age: {
-        type:String,
-        min:18,
+        type: Number,
+        min: 18,
+        validate: {
+            validator: function(v) {
+                return v >= 18;
+            },
+            message: 'Age must be at least 18'
+        }
     },
     gender: {
-        type:String,
-        validate(value){
-            if(!["male", "female" ,"Others"].includes(value)){
-                throw new Error("invalid gender");
-            }
-        }
+        type: String,
+        enum: ["male", "female", "Others"],
+        required: true
     },
 
 });

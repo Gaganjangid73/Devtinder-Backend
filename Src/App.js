@@ -1,7 +1,6 @@
 const express = require("express");
 const ConnectDB = require("./Config/database");
 const User = require("./models/user");
-const { Signupvalidation } = require("./Utiles/Signupvalidation");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
 const App = express();
@@ -12,6 +11,11 @@ const requestrouter = require("./Routes/request");
 // Middlewares
 App.use(express.json());
 App.use(cookieParser());
+
+
+App.use("/" , authRouter);
+App.use("/" , profileRouter);
+App.use("/" , requestrouter);
 
 // FEED API
 // App.get("/feed", async (req, res) => {
