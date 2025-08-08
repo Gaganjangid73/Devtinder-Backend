@@ -4,7 +4,7 @@ const User = require("./models/user");
 const { Signupvalidation } = require("./Utiles/Signupvalidation");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-const JWT = require("jsonwebtoken");
+
 const userAuth = require("./middleware/userauth");
 
 const App = express();
@@ -13,42 +13,8 @@ const App = express();
 App.use(express.json());
 App.use(cookieParser());
 
-// SIGNUP API
 
 
-//LOGIN API (JWT issued here)
-App.post("/login", async (req, res) => {
-  try {
-    const { emailId, password } = req.body;
-
-    const LoginUser = await User.findOne({ emailId });
-    if (!LoginUser) throw new Error("Email ID not found in DB");
-
-    const isPasswordValid = await bcrypt.compare(password, LoginUser.password);
-    if (!isPasswordValid) throw new Error("Incorrect password");
-
-    // Issue token
-    const token = JWT.sign({ _id: LoginUser._id }, "uhurvhufrbv", {
-      expiresIn: "1h",
-    });
-
-    res.cookie("token", token,);
-
-    res.send("User login successful");
-  } catch (err) {
-    res.status(400).send("ERROR: " + err.message);
-  }
-});
-
-//  GET PROFILE (using token from cookies)
-App.get("/profile",userAuth, async (req, res) => {
-  try {
-    res.send(req.user); // gwt user profile of login user 
-  } catch (err) {
-    // console.error("Error in /profile:", err.message);
-    res.status(401).send("Unauthorized: " + err.message);
-  }
-});
 
 // FEED API
 App.get("/feed", async (req, res) => {
@@ -107,16 +73,7 @@ App.patch("/user/:userID", async (req, res) => {
   }
 });
 
-// senduserrequest API
-App.post("/senduserrequest",userAuth, async (req,res)=>{
-   try {
-     const users = req.user;
-     res.send(users.firstName + " is send requset succesfully");
-   } catch (err) {
-      res.status(400).send("somethingwentwrong");
-   }
 
-})
 
 // CONNECT TO DATABASE AND START SERVER
 ConnectDB()

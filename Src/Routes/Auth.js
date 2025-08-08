@@ -1,6 +1,13 @@
 const express = require("express");
 const authRouter = express.Router();
+const User = require("./models/user");
+const JWT = require("jsonwebtoken");
 
+
+authRouter.use(express.json());
+authRouter.use(cookieParser());
+
+// SIGNUP API
 authRouter.post("/signup", async (req, res) => {
   try {
     Signupvalidation(req);
@@ -22,7 +29,29 @@ authRouter.post("/signup", async (req, res) => {
 });
 
 
+//LOGIN API (JWT issued here)
+App.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
 
+    const LoginUser = await User.findOne({ emailId });
+    if (!LoginUser) throw new Error("Email ID not found in DB");
+
+    const isPasswordValid = await bcrypt.compare(password, LoginUser.password);
+    if (!isPasswordValid) throw new Error("Incorrect password");
+
+    // Issue token
+    const token = JWT.sign({ _id: LoginUser._id }, "uhurvhufrbv", {
+      expiresIn: "1h",
+    });
+
+    res.cookie("token", token,);
+
+    res.send("User login successful");
+  } catch (err) {
+    res.status(400).send("ERROR: " + err.message);
+  }
+});
 
 
 module.exports = authRouter;
