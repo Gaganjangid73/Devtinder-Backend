@@ -7,6 +7,7 @@ const App = express();
 const authRouter = require("./Routes/Auth");
 const profileRouter = require("./Routes/Profile");
 const requestrouter = require("./Routes/request");
+const userrouter = require("./Routes/User");
 
 // Middlewares
 App.use(express.json());
@@ -16,6 +17,7 @@ App.use(cookieParser());
 App.use("/" , authRouter);
 App.use("/" , profileRouter);
 App.use("/" , requestrouter);
+App.use("/", userrouter);
 
 // FEED API
 // App.get("/feed", async (req, res) => {
