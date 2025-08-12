@@ -8,10 +8,16 @@ const authRouter = require("./Routes/Auth");
 const profileRouter = require("./Routes/Profile");
 const requestrouter = require("./Routes/request");
 const userrouter = require("./Routes/User");
+const cors = require("cors");
+
 
 // Middlewares
 App.use(express.json());
 App.use(cookieParser());
+App.use(cors({
+  origin: "http://localhost:5173", 
+  credentials: true                
+}));
 
 
 App.use("/" , authRouter);

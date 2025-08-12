@@ -48,13 +48,9 @@ authRouter.post("/login", async (req, res) => {
       expiresIn: "1h",
     });
 
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 3600000 // 1 hour
-    });
+    res.cookie("token", token);
 
-    res.send("User login successful");
+    res.send(LoginUser);
   } catch (err) {
     res.status(400).send("ERROR: " + err.message);
   }
