@@ -39,6 +39,10 @@ const userSchema = new mongoose.Schema({
         enum: ["male", "female", "Others"],
         required: true
     },
+    photourl:{
+        type : String,
+        default : "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSe1WLSz9rlUbXgL4j2ZXgPr84gYw5zXH7AB2qAha6MrOdbVp82xnt2jPbRgf0KuzNam-BOMrZd98mQ8r26DVYXDw9fNYHGFMd1-_d4n-dvcA",
+    }
 
 });
 
