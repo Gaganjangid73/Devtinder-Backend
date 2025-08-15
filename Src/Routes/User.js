@@ -51,7 +51,7 @@ userrouter.get("/user/connections" , userAuth ,async(req,res)=>{
 userrouter.get("/feed", userAuth, async (req, res) => {
   try {
     const loggedInUser = req.user;
-const USER_SAFE_DATA = "firstName lastName photoUrl age gender about skills";
+const USER_SAFE_DATA = "firstName lastName photourl age gender about skills";
 
     const page = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
