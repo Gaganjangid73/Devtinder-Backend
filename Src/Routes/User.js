@@ -25,7 +25,7 @@ try {
 }
 })
 
-
+// connections of the user 
 userrouter.get("/user/connections" , userAuth ,async(req,res)=>{
     try {
         const loggedin = req.user;
