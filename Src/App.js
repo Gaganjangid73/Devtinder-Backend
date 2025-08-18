@@ -1,97 +1,48 @@
 const express = require("express");
-const ConnectDB = require("./Config/database");
-const User = require("./models/user");
-const bcrypt = require("bcrypt");
+const connectDB = require("./config/database");
+const app = express();
 const cookieParser = require("cookie-parser");
-const App = express();
-const authRouter = require("./Routes/Auth");
-const profileRouter = require("./Routes/Profile");
-const requestrouter = require("./Routes/request");
-const userrouter = require("./Routes/User");
 const cors = require("cors");
+const http = require("http");
 
+require("dotenv").config();
 
-// Middlewares
-App.use(express.json());
-App.use(cookieParser());
-App.use(cors({
-  origin: "http://localhost:5173", 
-  credentials: true                
-}));
+require("./utils/cronjob");
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+app.use(express.json());
+app.use(cookieParser());
 
-App.use("/" , authRouter);
-App.use("/" , profileRouter);
-App.use("/" , requestrouter);
-App.use("/", userrouter);
+const authRouter = require("./routes/auth");
+const profileRouter = require("./routes/profile");
+const requestRouter = require("./routes/request");
+const userRouter = require("./routes/user");
+const paymentRouter = require("./routes/payment");
+const initializeSocket = require("./utils/socket");
+const chatRouter = require("./routes/chat");
 
-// FEED API
-// App.get("/feed", async (req, res) => {
-//   try {
-//     const allUsers = await User.find().select("-password");
-//     res.send(allUsers);
-//   } catch (err) {
-//     res.status(400).send("Something went wrong");
-//   }
-// });
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", requestRouter);
+app.use("/", userRouter);
+app.use("/", paymentRouter);
+app.use("/", chatRouter);
 
-// // FIND USER BY EMAIL
-// App.get("/user", async (req, res) => {
-//   try {
-//     const { emailId } = req.body;
-//     const users = await User.find({ emailId });
+const server = http.createServer(app);
+initializeSocket(server);
 
-//     if (users.length === 0) {
-//       return res.status(404).send("User Not Found");
-//     }
-
-//     res.send(users);
-//   } catch (err) {
-//     res.status(400).send("Something went wrong");
-//   }
-// });
-
-// // DELETE USER BY ID
-// App.delete("/user", async (req, res) => {
-//   try {
-//     const { userID } = req.body;
-//     await User.findByIdAndDelete(userID);
-//     res.send("User deleted successfully");
-//   } catch (err) {
-//     res.status(400).send("Something went wrong");
-//   }
-// });
-
-// // UPDATE USER (Only allowed fields)
-// App.patch("/user/:userID", async (req, res) => {
-//   try {
-//     const userID = req.params.userID;
-//     const data = req.body;
-
-//     const ALLOWED = ["firstName", "gender", "emailId", "password"];
-//     const isValid = Object.keys(data).every((key) => ALLOWED.includes(key));
-
-//     if (!isValid) {
-//       throw new Error("User cannot be updated with invalid fields");
-//     }
-
-//     await User.findByIdAndUpdate(userID, data, { runValidators: true });
-//     res.send("User updated successfully");
-//   } catch (err) {
-//     res.status(400).send("Update Failed: " + err.message);
-//   }
-// });
-
-
-
-// CONNECT TO DATABASE AND START SERVER
-ConnectDB()
+connectDB()
   .then(() => {
-    console.log("Connected to the database");
-    App.listen(3000, () => {
-      console.log("Server is running on port 3000");
+    console.log("Database connection established...");
+    server.listen(process.env.PORT, () => {
+      console.log("Server is successfully listening on port 7777...");
     });
   })
   .catch((err) => {
-    console.error("Database connection failed:", err.message);
+    console.error("Database cannot be connected!!");
   });
