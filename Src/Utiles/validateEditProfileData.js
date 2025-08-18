@@ -19,8 +19,8 @@ const validateEditProfileData = (req) => {
         throw new Error("Age must be a number and at least 18");
     }
 
-    if (gender && !["male", "female", "Others"].includes(gender)) {
-        throw new Error("Gender must be male, female, or Others");
+    if (gender && !["male", "female", "other"].includes(gender)) {
+        throw new Error("Gender must be male, female, or other");
     }
 };
 

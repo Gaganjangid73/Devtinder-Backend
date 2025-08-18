@@ -1,5 +1,5 @@
 const { SendEmailCommand } = require("@aws-sdk/client-ses");
-const { sesClient } = require("./sesClient.js");
+const { sesClient } = require("./sesclient.js");
 
 const createSendEmailCommand = (toAddress, fromAddress, subject, body) => {
   return new SendEmailCommand({
@@ -31,6 +31,11 @@ const createSendEmailCommand = (toAddress, fromAddress, subject, body) => {
 };
 
 const run = async (subject, body, toEmailId) => {
+  if (!sesClient) {
+    console.log("SES client not configured, skipping email send");
+    return { message: "Email service not configured" };
+  }
+
   const sendEmailCommand = createSendEmailCommand(
     "akshaysaini.in@gmail.com",
     "akshay@devtinder.in",

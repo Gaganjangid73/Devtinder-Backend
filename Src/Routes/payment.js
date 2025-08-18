@@ -1,16 +1,20 @@
 const express = require("express");
-const { userAuth } = require("../middlewares/auth");
+const { userAuth } = require("../middleware/userauth");
 const paymentRouter = express.Router();
-const razorpayInstance = require("../utils/razorpay");
+const razorpayInstance = require("../Utiles/razorpay");
 const Payment = require("../models/payment");
 const User = require("../models/user");
-const { membershipAmount } = require("../utils/constants");
+const { membershipAmount } = require("../Utiles/constant");
 const {
   validateWebhookSignature,
 } = require("razorpay/dist/utils/razorpay-utils");
 
 paymentRouter.post("/payment/create", userAuth, async (req, res) => {
   try {
+    if (!razorpayInstance) {
+      return res.status(500).json({ msg: "Payment service not configured" });
+    }
+
     const { membershipType } = req.body;
     const { firstName, lastName, emailId } = req.user;
 

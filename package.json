@@ -2,10 +2,10 @@
   "name": "devtinder",
   "version": "1.0.0",
   "description": "tinder for devs",
-  "main": "index.js",
+  "main": "Src/App.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js"
+    "start": "node Src/App.js",
+    "dev": "nodemon Src/App.js"
   },
   "keywords": [
     "nodejs",
